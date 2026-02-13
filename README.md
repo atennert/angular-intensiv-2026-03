@@ -30,7 +30,6 @@
 
 The API provides fake data that you can use in your Angular application.
 
-> [!NOTE]
 > The API starts at http://localhost:4730.
 > When you open this page, you'll find documentation for all endpoints. 🚀
 
