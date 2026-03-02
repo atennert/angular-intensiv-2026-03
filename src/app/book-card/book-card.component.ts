@@ -14,4 +14,8 @@ export class BookCardComponent {
   authorClass = 'author-class';
 
   readonly content = input.required<Book>();
+
+  protected handleDetailClick(click: MouseEvent) {
+    console.log(click);
+  }
 }
