@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.book-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: deeppink;
+}
+
+.book-abstract {
+  font-style: italic;
+}
