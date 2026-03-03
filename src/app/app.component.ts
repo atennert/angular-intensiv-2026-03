@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { BookCardComponent } from './book-card/book-card.component';
 import { Book } from './book';
+import { BookFilterPipe } from './book-filter/book-filter.pipe';
 
 @Component({
   selector: 'app-root',
-  imports: [BookCardComponent],
+  imports: [BookCardComponent, BookFilterPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -27,8 +28,14 @@ export class AppComponent {
     }
   ];
 
+  bookSearchTerm = '';
+
   protected goToBookDetails(book: Book) {
     console.log('Navigate to book details, soon...');
     console.table(book);
+  }
+
+  protected updateBookSearchTerm(input: Event) {
+    this.bookSearchTerm = (input.target as HTMLInputElement).value;
   }
 }
