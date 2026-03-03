@@ -1,34 +1,22 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { BookFilterPipe } from '../book-filter/book-filter.pipe';
 import { Book } from '../book';
 import { BookApiService } from '../book-api.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-book',
-  imports: [BookCardComponent, BookFilterPipe],
+  imports: [BookCardComponent, BookFilterPipe, AsyncPipe],
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss'
 })
-export class BookComponent implements OnInit {
+export class BookComponent {
   private readonly bookApi = inject(BookApiService);
-  private readonly destroyRef = inject(DestroyRef);
 
-  books: Book[] = [];
+  books$ = this.bookApi.getAll$();
 
   bookSearchTerm = '';
-
-  ngOnInit() {
-    this.bookApi.getAll().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: books => {
-      this.books = books;
-    },
-      error: err => console.error(err)
-    });
-  }
 
   protected goToBookDetails(book: Book) {
     console.log('Navigate to book details, soon...');
