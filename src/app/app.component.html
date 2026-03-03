@@ -1,6 +1,10 @@
 <h1>Buch-Verwaltung</h1>
 
-<app-book-card
-  [content]="book"
-  (detailClick)="goToBookDetails($event)"
-/>
+<div class="book-list">
+  @for (book of books; track book.title) {
+    <app-book-card
+      [content]="book"
+      (detailClick)="goToBookDetails($event)"
+    />
+  }
+</div>
