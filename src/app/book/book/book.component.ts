@@ -1,9 +1,9 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { BookFilterPipe } from '../book-filter/book-filter.pipe';
 import { Book } from '../book';
 import { BookApiService } from '../book-api.service';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-book',
@@ -11,24 +11,23 @@ import { Subscription } from 'rxjs';
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss'
 })
-export class BookComponent implements OnInit, OnDestroy {
+export class BookComponent implements OnInit {
   private readonly bookApi = inject(BookApiService);
-  private subscription: Subscription = new Subscription();
+  private readonly destroyRef = inject(DestroyRef);
+
   books: Book[] = [];
 
   bookSearchTerm = '';
 
   ngOnInit() {
-    this.subscription.add(this.bookApi.getAll().subscribe({
+    this.bookApi.getAll().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: books => {
       this.books = books;
     },
       error: err => console.error(err)
-    }));
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    });
   }
 
   protected goToBookDetails(book: Book) {
