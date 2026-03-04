@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
 export class BookComponent {
   private readonly bookApi = inject(BookApiService);
 
-  books$ = this.bookApi.getAll$();
+  readonly books$ = this.bookApi.getAll$();
 
   bookSearchTerm = '';
 
