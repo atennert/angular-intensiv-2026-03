@@ -1,36 +1,33 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, signal, Signal } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
-import { BookFilterPipe } from '../book-filter/book-filter.pipe';
 import { Book } from '../book';
 import { BookApiService } from '../book-api.service';
-import { AsyncPipe } from '@angular/common';
-import { shareReplay, Subscription } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BookFilterService } from '../book-filter/book-filter.service';
 
 @Component({
   selector: 'app-book',
-  imports: [BookCardComponent, BookFilterPipe, AsyncPipe],
+  imports: [BookCardComponent],
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss'
 })
-export class BookComponent implements OnInit, OnDestroy {
+export class BookComponent {
   private readonly bookApi = inject(BookApiService);
+  private readonly bookFilter = inject(BookFilterService);
 
-  readonly books$ = this.bookApi.getAll$().pipe(
-    shareReplay(1)
-  );
+  readonly books: Signal<Book[]> = toSignal(this.bookApi.getAll$(), { initialValue: [] });
 
-  bookSearchTerm = '';
-  private subscription = Subscription.EMPTY;
+  readonly filteredBooks: Signal<Book[]> = computed(() => {
+    return this.bookFilter.filter(this.books(), this.bookSearchTerm());
+  });
 
-  ngOnInit(): void {
-    this.subscription = this.books$.subscribe(books => {
-      console.table(books);
+  constructor() {
+    effect(() => {
+      console.table(this.books());
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  readonly bookSearchTerm = signal('');
 
   protected goToBookDetails(book: Book) {
     console.log('Navigate to book details, soon...');
@@ -38,6 +35,6 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   protected updateBookSearchTerm(input: Event) {
-    this.bookSearchTerm = (input.target as HTMLInputElement).value;
+    this.bookSearchTerm.set((input.target as HTMLInputElement).value);
   }
 }

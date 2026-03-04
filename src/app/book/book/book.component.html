@@ -3,9 +3,8 @@
 </div>
 
 <div class="book-list">
-  @let books = books$ | async;
-  <div>Total books: {{ books?.length }}</div>
-  @for (book of books | bookFilter: bookSearchTerm; track book.isbn) {
+  <div>Total books: {{ filteredBooks().length }}</div>
+  @for (book of filteredBooks(); track book.isbn) {
     <app-book-card
       [content]="book"
       (detailClick)="goToBookDetails($event)"
