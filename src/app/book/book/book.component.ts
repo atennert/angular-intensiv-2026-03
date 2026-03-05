@@ -4,6 +4,7 @@ import { Book } from '../book';
 import { BookApiService } from '../book-api.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BookFilterService } from '../book-filter/book-filter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book',
@@ -14,6 +15,7 @@ import { BookFilterService } from '../book-filter/book-filter.service';
 export class BookComponent {
   private readonly bookApi = inject(BookApiService);
   private readonly bookFilter = inject(BookFilterService);
+  private readonly router = inject(Router);
 
   readonly books: Signal<Book[]> = toSignal(this.bookApi.getAll$(), { initialValue: [] });
 
@@ -29,9 +31,8 @@ export class BookComponent {
 
   readonly bookSearchTerm = signal('');
 
-  protected goToBookDetails(book: Book) {
-    console.log('Navigate to book details, soon...');
-    console.table(book);
+  protected async goToBookDetails(book: Book) {
+    await this.router.navigate(['/books', 'detail', book.isbn]);
   }
 
   protected updateBookSearchTerm(input: Event) {

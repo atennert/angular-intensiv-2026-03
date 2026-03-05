@@ -1,0 +1,8 @@
+@let book = book$ | async;
+@if (book) {
+  <h2>{{ book?.title }}</h2>
+  <h3>{{ book?.author }}</h3>
+  <p>{{ book?.abstract }}</p>
+} @else {
+  <p>Loading...</p>
+}
