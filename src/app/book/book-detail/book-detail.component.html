@@ -1,8 +1,8 @@
 @let book = book$ | async;
-@if (book) {
+@defer (when book !== null) {
   <h2>{{ book?.title }}</h2>
   <h3>{{ book?.author }}</h3>
   <p>{{ book?.abstract }}</p>
-} @else {
+} @placeholder {
   <p>Loading...</p>
 }

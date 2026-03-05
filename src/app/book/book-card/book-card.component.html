@@ -1,6 +1,6 @@
 <h3 class="book-title">{{content().title}}</h3>
 <h4 [style]="customStyle" [class]="authorClass">{{content().author}}</h4>
 
-<a (click)="handleDetailClick()">Details</a>
+<a [routerLink]="['/books', 'detail', content().isbn]">Details</a>
 
 <p class="book-abstract">{{content().abstract}}</p>
