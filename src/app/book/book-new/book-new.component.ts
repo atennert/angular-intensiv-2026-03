@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BookForm } from './book-form';
 
 @Component({
   selector: 'app-book-new',
@@ -10,10 +11,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class BookNewComponent {
   private readonly fb = inject(FormBuilder);
 
-  readonly form: FormGroup = this.fb.group({
-    isbn: [''],
-    author: [''],
-    title: [''],
+  readonly form: FormGroup<BookForm> = this.fb.group({
+    isbn: ['', [Validators.required]],
+    author: ['', [Validators.required]],
+    title: ['', [Validators.required]],
     subtitle: [''],
     abstract: ['']
   });

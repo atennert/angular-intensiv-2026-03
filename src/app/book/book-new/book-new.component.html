@@ -5,12 +5,21 @@
 >
   <label>ISBN
     <input type="text" formControlName="isbn">
+    @if(form.get('isbn')?.dirty && form.get('isbn')?.hasError('required')){
+      <small>Please insert a title.</small>
+    }
   </label>
   <label>Author
     <input type="text" formControlName="author">
+    @if(form.get('author')?.dirty && form.get('author')?.hasError('required')){
+      <small>Please insert a title.</small>
+    }
   </label>
   <label>Title
     <input type="text" formControlName="title">
+    @if(form.get('title')?.dirty && form.get('title')?.hasError('required')){
+      <small>Please insert a title. </small>
+    }
   </label>
   <label>Subtitle
     <input type="text" formControlName="subtitle">
@@ -19,5 +28,5 @@
     <input type="text" formControlName="abstract">
   </label>
 
-  <button class="book-form-submit" type="submit">Save</button>
+  <button class="book-form-submit" type="submit" [disabled]="form.invalid">Save</button>
 </form>
