@@ -12,15 +12,20 @@
       <small>Please insert a VALID isbn.</small>
     }
   </label>
-  <label>Author
-    <input type="text" formControlName="author">
-    @if(form.get('author')?.dirty && form.get('author')?.hasError('required')){
-      <small>Please insert a author.</small>
+  <ng-container formArrayName="authors">
+    @for(author of authors.controls; track $index){
+      <div>
+        <input type="text" [formControlName]="$index"> <button type="button" (click)="deleteAuthor($index)">Remove</button><br>
+        @if(author.dirty && author.hasError('required')){
+          <small>Please insert a author.</small>
+        }
+        @if(author.dirty && author.hasError('invalidAuthor')){
+          <small>Please insert a VALID author.</small>
+        }
+      </div>
     }
-    @if(form.get('author')?.dirty && form.get('author')?.hasError('invalidAuthor')){
-      <small>Please insert a VALID author.</small>
-    }
-  </label>
+  </ng-container>
+  <button type="button" (click)="addAuthor()">Add Author</button>
   <label>Title
     <input type="text" formControlName="title">
     @if(form.get('title')?.dirty && form.get('title')?.hasError('required')){

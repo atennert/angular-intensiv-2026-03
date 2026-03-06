@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BookForm } from './book-form';
 import { BookApiService } from '../book-api.service';
 import { Book } from '../book';
@@ -19,14 +19,34 @@ export class BookNewComponent {
 
   readonly form: FormGroup<BookForm> = this.fb.group({
     isbn: ['', [Validators.required, isbnValidator(ISBN.ISBN_10)]],
-    author: ['', [Validators.required, authorValidator]],
+    authors: this.fb.array([
+      this.fb.control<string | null>('', [Validators.required, authorValidator])
+    ]),
     title: ['', [Validators.required]],
     subtitle: [''],
     abstract: ['']
   });
 
+  get authors() {
+    return this.form.get('authors') as FormArray;
+  }
+
+  addAuthor() {
+    this.authors.controls.push(this.fb.control('', [Validators.required, authorValidator]));
+  }
+
+  deleteAuthor(index: number) {
+    this.authors.removeAt(index);
+  }
+
   submit() {
-    this.bookApi.create(this.form.value as Book).subscribe({
+    const newBook = {
+      ...this.form.value,
+      author: this.authors.value.join(', ')
+    } as Book & { authors: unknown };
+    console.log('New book:', newBook);
+    delete newBook['authors'];
+    this.bookApi.create(newBook).subscribe({
       next: book => {
         console.log('Book created:', book);
         this.router.navigate(['/books', 'detail', book.isbn]);
