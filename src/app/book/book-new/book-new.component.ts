@@ -4,6 +4,7 @@ import { BookForm } from './book-form';
 import { BookApiService } from '../book-api.service';
 import { Book } from '../book';
 import { Router } from '@angular/router';
+import { authorValidator, ISBN, isbnValidator } from './author.validator';
 
 @Component({
   selector: 'app-book-new',
@@ -17,8 +18,8 @@ export class BookNewComponent {
   private readonly router = inject(Router);
 
   readonly form: FormGroup<BookForm> = this.fb.group({
-    isbn: ['', [Validators.required]],
-    author: ['', [Validators.required]],
+    isbn: ['', [Validators.required, isbnValidator(ISBN.ISBN_10)]],
+    author: ['', [Validators.required, authorValidator]],
     title: ['', [Validators.required]],
     subtitle: [''],
     abstract: ['']

@@ -6,13 +6,19 @@
   <label>ISBN
     <input type="text" formControlName="isbn">
     @if(form.get('isbn')?.dirty && form.get('isbn')?.hasError('required')){
-      <small>Please insert a title.</small>
+      <small>Please insert a isbn.</small>
+    }
+    @if(form.get('isbn')?.dirty && form.get('isbn')?.hasError('invalidISBN')){
+      <small>Please insert a VALID isbn.</small>
     }
   </label>
   <label>Author
     <input type="text" formControlName="author">
     @if(form.get('author')?.dirty && form.get('author')?.hasError('required')){
-      <small>Please insert a title.</small>
+      <small>Please insert a author.</small>
+    }
+    @if(form.get('author')?.dirty && form.get('author')?.hasError('invalidAuthor')){
+      <small>Please insert a VALID author.</small>
     }
   </label>
   <label>Title
