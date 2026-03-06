@@ -1,0 +1,23 @@
+<form
+  class="book-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <label>ISBN
+    <input type="text" formControlName="isbn">
+  </label>
+  <label>Author
+    <input type="text" formControlName="author">
+  </label>
+  <label>Title
+    <input type="text" formControlName="title">
+  </label>
+  <label>Subtitle
+    <input type="text" formControlName="subtitle">
+  </label>
+  <label>Abstract
+    <input type="text" formControlName="abstract">
+  </label>
+
+  <button class="book-form-submit" type="submit">Save</button>
+</form>

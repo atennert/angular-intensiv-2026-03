@@ -1,7 +1,9 @@
 <div>
   <input type="text" (input)="updateBookSearchTerm($event)" placeholder="Suche">
 </div>
-
+<div>
+  <a [routerLink]="['new']">Add new book</a>
+</div>
 <div class="book-list">
   <div>Total books: {{ filteredBooks().length }}</div>
   @for (book of filteredBooks(); track book.isbn) {
